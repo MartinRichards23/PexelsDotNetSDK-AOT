@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net7.0</TargetFrameworks>
     <PackageId>PexelsDotNetSDK</PackageId>
-    <Description>A .NET Core wrapper for the Pexels.com API.
-</Description>
+    <Description>A .NET Core wrapper for the Pexels.com API.</Description>
     <Company>Pexels</Company>
     <Authors>Simon Gough</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,6 +16,17 @@
     <RepositoryType></RepositoryType>
     <PackageTags>pexels, images, videos</PackageTags>
   </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="SampleApp\**" />
+    <Content Remove="SampleApp\**" />
+    <EmbeddedResource Remove="SampleApp\**" />
+    <None Remove="SampleApp\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

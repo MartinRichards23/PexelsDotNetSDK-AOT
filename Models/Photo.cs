@@ -1,7 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
+#if NET7_0_OR_GREATER
+using JsonProperty = System.Text.Json.Serialization.JsonPropertyNameAttribute;
+#else
+using Newtonsoft.Json;
+#endif
 
 namespace PexelsDotNetSDK.Models
 {
@@ -26,7 +31,7 @@ namespace PexelsDotNetSDK.Models
         public string photographerUrl { get; set; }
 
         [JsonProperty("photographer_id")]
-        public string photographerId { get; set; }
+        public long? photographerId { get; set; }
 
         [JsonProperty("src")]
         public Source source { get; set; }

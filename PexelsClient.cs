@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json;
-using PexelsDotNetSDK.Models;
+﻿using PexelsDotNetSDK.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -326,13 +323,14 @@ namespace PexelsDotNetSDK.Api
         {
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
+            if (!response.IsSuccessStatusCode)
+                throw new ErrorResponse(response.StatusCode, responseBody);
 
-                return JsonConvert.DeserializeObject<T>(responseBody);
-            }
-
-            throw new ErrorResponse(response.StatusCode, responseBody);
+#if NET7_0_OR_GREATER
+            return SerializerContext.Deserialize<T>(responseBody);
+#else
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseBody);
+#endif
         }
 
         private RateLimit ProcessRateLimits(HttpResponseMessage response)

@@ -1,10 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
+#if NET7_0_OR_GREATER
+using JsonProperty = System.Text.Json.Serialization.JsonPropertyNameAttribute;
+#else
+using Newtonsoft.Json;
+#endif
+
 namespace PexelsDotNetSDK.Models
-{ 
+{
     public abstract class Page
     {
         [JsonProperty("page")]
@@ -21,7 +26,6 @@ namespace PexelsDotNetSDK.Models
 
         [JsonProperty("rate_limits")]
         public RateLimit rateLimit { get; set; }
-
     }
 
     public class RateLimit
